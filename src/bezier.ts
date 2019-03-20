@@ -7,8 +7,17 @@ export class Bezier {
   ): Bezier {
     const c2 = this.calculateControlPoints(points[0], points[1], points[2]).c2;
     const c3 = this.calculateControlPoints(points[1], points[2], points[3]).c1;
+    const c4 = this.calculateControlPoints(points[2], points[3], points[4]).c2;
 
-    return new Bezier(points[1], c2, c3, points[2], widths.start, widths.end);
+    return new Bezier(
+      points[1],
+      c2,
+      c3,
+      c4,
+      points[2],
+      widths.start,
+      widths.end,
+    );
   }
 
   private static calculateControlPoints(
@@ -49,6 +58,7 @@ export class Bezier {
     public startPoint: Point,
     public control2: IBasicPoint,
     public control1: IBasicPoint,
+    public control3: IBasicPoint,
     public endPoint: Point,
     public startWidth: number,
     public endWidth: number,
@@ -68,6 +78,7 @@ export class Bezier {
         this.startPoint.x,
         this.control1.x,
         this.control2.x,
+        this.control3.x,
         this.endPoint.x,
       );
       const cy = this.point(
@@ -75,6 +86,7 @@ export class Bezier {
         this.startPoint.y,
         this.control1.y,
         this.control2.y,
+        this.control3.y,
         this.endPoint.y,
       );
 
@@ -98,12 +110,14 @@ export class Bezier {
     start: number,
     c1: number,
     c2: number,
+    c3: number,
     end: number,
   ): number {
     // prettier-ignore
-    return (       start * (1.0 - t) * (1.0 - t)  * (1.0 - t))
-         + (3.0 *  c1    * (1.0 - t) * (1.0 - t)  * t)
-         + (3.0 *  c2    * (1.0 - t) * t          * t)
-         + (       end   * t         * t          * t);
+    return (       start * (1.0 - t) * (1.0 - t) * (1.0 - t)  * (1.0 - t))
+         + (4.0 *  c1    * (1.0 - t) * (1.0 - t) * (1.0 - t)  * t)
+         + (4.0 *  c2    * (1.0 - t) * (1.0 - t) * t          * t)
+         + (4.0 *  c3    * (1.0 - t) *      t    * t          * t)
+         + (       end   * t         * t          * t         * t);
   }
 }

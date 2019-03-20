@@ -353,10 +353,10 @@ export default class SignaturePad {
 
     _lastPoints.push(point);
 
-    if (_lastPoints.length > 2) {
+    if (_lastPoints.length > 3) {
       // To reduce the initial lag make it work with 3 points
       // by copying the first point to the beginning.
-      if (_lastPoints.length === 3) {
+      if (_lastPoints.length === 4) {
         _lastPoints.unshift(_lastPoints[0]);
       }
 
@@ -435,7 +435,10 @@ export default class SignaturePad {
       y += 3 * u * tt * curve.control2.y;
       y += ttt * curve.endPoint.y;
 
-      const width = Math.min(curve.startWidth + ttt * widthDelta, this.maxWidth);
+      const width = Math.min(
+        curve.startWidth + ttt * widthDelta,
+        this.maxWidth,
+      );
       this._drawCurveSegment(x, y, width);
     }
 
